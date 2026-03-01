@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Devoir Logistics Pilot  
+**Deterministic Allocation Engine for Capacity-Constrained Pickup Networks**
 
-## Getting Started
+---
 
-First, run the development server:
+## Overview
+
+This project implements a deterministic coordination engine designed to optimize household assignments across limited-capacity pickup partners.
+
+The system models a real-world constraint:
+
+> When demand exceeds partner capacity, how do we allocate fairly, transparently, and reproducibly?
+
+Instead of probabilistic or ML-based routing, this engine uses explicit policy rules, tier floors, and deterministic ranking logic.
+
+---
+
+## Core Features
+
+### 1. Tiered Capacity Floors
+
+Three household tiers:
+
+- Equity  
+- Anchor  
+- Steward  
+
+Each tier is assigned a minimum capacity reserve (default: **4 seats per tier**).
+
+If total capacity is insufficient to honor all floors:
+
+- The system soft-scales reserves proportionally  
+- Preserves fairness structure  
+- Maintains deterministic ordering  
+
+---
+
+### 2. Deterministic Ranking Logic
+
+Within each tier, assignments are ranked by:
+
+1. Capacity availability  
+2. Preferred day match  
+3. Time window overlap  
+4. Lowest current load  
+5. Timestamp (FIFO tie-breaker)  
+
+This guarantees:
+
+- No randomness  
+- Fully reproducible results  
+- Transparent decision traces  
+
+---
+
+### 3. Exception Queue
+
+If no true time window overlap exists:
+
+- A suggested closest window is assigned  
+- The household is flagged as `isException: true`  
+- Full decision trace is preserved  
+- The UI surfaces a coordinator-facing exception queue  
+
+This enables human follow-up without breaking allocation determinism.
+
+---
+
+### 4. Infeasible Capacity Scenario
+
+The engine can be tested under two modes:
+
+- Feasible  
+- Infeasible (`?scenario=infeasible`)  
+
+In infeasible mode:
+
+- Total demand exceeds available capacity  
+- Reserve scaling activates  
+- Exception rates increase  
+- Coordinator metrics update  
+
+This stress-tests fairness and constraint handling.
+
+---
+
+## Operational Snapshot (Generated Per Run)
+
+The API returns:
+
+- Total demand  
+- Assigned by tier  
+- Exceptions by tier  
+- Effective reserve  
+- Feasibility flag  
+- Exception rate  
+- Partner manifests  
+- Window usage counts  
+
+This simulates a coordinator dashboard environment.
+
+---
+
+## Project Structure
+src/
+app/
+api/assign/route.ts → API endpoint
+page.tsx → Coordinator UI
+lib/
+data/mock.ts → Mock households + locations
+engine/
+assign.ts → Deterministic allocation engine
+types.ts → Policy + snapshot + assignment types
+
+---
+
+## Running Locally
+
+Install dependencies:
 
 ```bash
+npm install
+
+Run development server:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
+http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To test infeasible mode:
+/api/assign?scenario=infeasible
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Why Deterministic?
 
-## Learn More
+This system was built to model constrained distribution networks (e.g., food access pilots, CSA bundles, community pickup nodes).
 
-To learn more about Next.js, take a look at the following resources:
+In such systems:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Fairness must be auditable  
+- Allocation must be explainable  
+- Decisions must be reproducible  
+- Exception handling must be explicit  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Randomized or opaque routing systems erode trust.
 
-## Deploy on Vercel
+This engine prioritizes:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Policy clarity  
+- Capacity transparency  
+- Deterministic fairness  
