@@ -45,11 +45,7 @@ Within each tier, assignments are ranked by:
 4. Lowest current load  
 5. Timestamp (FIFO tie-breaker)  
 
-This guarantees:
-
-- No randomness  
-- Fully reproducible results  
-- Transparent decision traces  
+This guarantees reproducable results & transparent decision traces
 
 ---
 
@@ -97,7 +93,7 @@ The API returns:
 - Partner manifests  
 - Window usage counts  
 
-This simulates a coordinator dashboard environment.
+This simulates the coordinator dashboard environment.
 
 ---
 
@@ -120,31 +116,26 @@ Install dependencies:
 
 ```bash
 npm install
-
+```
 Run development server:
+```
 npm run dev
+```
 
 Open:
+```
 http://localhost:3000
+```
 
 To test infeasible mode:
+```
 /api/assign?scenario=infeasible
+```
 
 ## Why Deterministic?
 
-This system was built to model constrained distribution networks (e.g., food access pilots, CSA bundles, community pickup nodes).
+This system was built to model constrained distribution networks (e.g., food access pilots, transportation scheduling, last-mile delievery). 
 
-In such systems:
+These systems require allocation logic that's explainable and explicit exception handling because randomized or opaque routing systems erode trust.
 
-- Fairness must be auditable  
-- Allocation must be explainable  
-- Decisions must be reproducible  
-- Exception handling must be explicit  
-
-Randomized or opaque routing systems erode trust.
-
-This engine prioritizes:
-
-- Policy clarity  
-- Capacity transparency  
-- Deterministic fairness  
+This engine prioritizes policy clarity, capacity transparency, and deterministic fairness.
