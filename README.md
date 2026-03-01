@@ -27,10 +27,10 @@ Three household tiers:
 
 Each tier is assigned a minimum capacity reserve (default: **4 seats per tier**).
 
-If total capacity is insufficient to honor all floors:
+If the total capacity is insufficient to honor all floors:
 
 - The system soft-scales reserves proportionally  
-- Preserves fairness structure  
+- Preserves the fairness structure  
 - Maintains deterministic ordering  
 
 ---
@@ -45,7 +45,7 @@ Within each tier, assignments are ranked by:
 4. Lowest current load  
 5. Timestamp (FIFO tie-breaker)  
 
-This guarantees reproducable results & transparent decision traces
+This guarantees reproducible results & transparent decision traces
 
 ---
 
@@ -125,7 +125,7 @@ src/
 ### 1. Install dependencies
 npm install
 
-### 2. Start development server
+### 2. Start the development server
 npm run dev
 
 ### 3. Open in browser
@@ -137,6 +137,6 @@ http://localhost:3000
 
 This system was built to model constrained distribution networks (e.g., food access pilots, transportation scheduling, last-mile delivery). 
 
-These systems require allocation logic that's explainable and explicit exception handling because randomized or opaque routing systems erode trust.
+These systems require explainable allocation logic and explicit exception handling because randomized or opaque routing systems erode trust.
 
-This engine prioritizes policy clarity, capacity transparency, and deterministic fairness.
+This engine prioritizes **policy clarity**, **capacity transparency**, and **deterministic fairness**.
