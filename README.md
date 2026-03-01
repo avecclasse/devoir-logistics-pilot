@@ -121,7 +121,7 @@ src/
 │     └─ types.ts             → Policy, snapshot, and assignment types
 │
 └─ README.md
-'''
+```
 ---
 
 ## Running Locally
