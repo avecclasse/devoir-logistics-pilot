@@ -102,33 +102,39 @@ This simulates a coordinator dashboard environment.
 ---
 
 ## Project Structure
+
+```text
 src/
-app/
-api/assign/route.ts → API endpoint
-page.tsx → Coordinator UI
-lib/
-data/mock.ts → Mock households + locations
-engine/
-assign.ts → Deterministic allocation engine
-types.ts → Policy + snapshot + assignment types
+├─ app/
+│  ├─ api/
+│  │  └─ assign/
+│  │     └─ route.ts         
+│  ├─ page.tsx                
+│  └─ layout.tsx
+│
+├─ lib/
+│  ├─ data/
+│  │  └─ mock.ts              
+│  │
+│  └─ engine/
+│     ├─ assign.ts            → Deterministic allocation engine
+│     └─ types.ts             → Policy, snapshot, and assignment types
+│
+└─ README.md
 
 ---
-
 ## Running Locally
 
-Install dependencies:
-
-```bash
+### 1. Install dependencies
 npm install
 
-Run development server:
+### 2. Start development server
 npm run dev
 
-Open:
+### 3. Open in browser
 http://localhost:3000
 
-To test infeasible mode:
-/api/assign?scenario=infeasible
+---
 
 ## Why Deterministic?
 
